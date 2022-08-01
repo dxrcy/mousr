@@ -2,7 +2,7 @@
 
 Move mouse cursor with keyboard!
 
-(this readme is not finished)
+BETA VERSION (uncompiled) OUT NOW!
 
 `[report bug]`
 
