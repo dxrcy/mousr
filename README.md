@@ -31,7 +31,6 @@ Now written in AutoHotKey!
 # TODO
 
 - [ ] Read shortcuts file
-- [ ] Rename vars
 - [ ] Compile
 - [ ] Test
 - [ ] Survey

@@ -3,24 +3,24 @@
 SetWorkingDir %A_ScriptDir%
 
 ; Variables
-active        := true ; Active on start
+active         := true ; Active on start
 ; Speed settings
-speed_default := 35   ; Default speed
-speed         := speed_default
-speed_slow    := 0.2  ; Slow speed multiplier on shifmt key
-speed_accel   := 1.5  ; Acceleration amount
-speed_min     := 8    ; Minimum speed
-speed_max     := 100  ; Maximum speed
-speed_duration      := 2    ; How fast the mouse moves each step
+speed_default  := 35   ; Default speed
+speed_slow     := 0.2  ; Slow speed multiplier on shifmt key
+speed_accel    := 1.5  ; Acceleration amount
+speed_min      := 8    ; Minimum speed
+speed_max      := 100  ; Maximum speed
+speed_duration := 1.5  ; How fast the mouse moves each step
 ; Spin settings
-spin_amount   := 20
-spin_size     := 25
-spin_duration := 0.05
+spin_amount    := 20
+spin_size      := 25
+spin_duration  := 0.05
 ; Icon settings (active/inactive icon filepaths)
-icon_active := "image/icon-active.ico"
-icon_inactive := "image/icon-inactive.ico"
+icon_active    := "image/icon-active.ico"
+icon_inactive  := "image/icon-inactive.ico"
 
-SetDefaultMouseSpeed duration
+speed          := speed_default
+SetDefaultMouseSpeed speed_duration
 setIcon()
 
 ; Keyboard shortcut map
@@ -78,10 +78,7 @@ ToggleActive() {
 }
 ; Kill program
 Kill() {
-  global
-  If active {
-    ExitApp
-  }
+  ExitApp
 }
 
 ; Mouse move
