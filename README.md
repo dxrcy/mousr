@@ -30,7 +30,6 @@ Now written in AutoHotKey!
 
 # TODO
 
-- [ ] Stop click spamming
 - [ ] Read shortcuts file
 - [ ] Compile
 - [ ] Test
