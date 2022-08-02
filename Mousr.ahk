@@ -10,7 +10,7 @@ speed_slow     := 0.2  ; Slow speed multiplier on shifmt key
 speed_accel    := 1.5  ; Acceleration amount
 speed_min      := 8    ; Minimum speed
 speed_max      := 100  ; Maximum speed
-speed_duration := 1.5  ; How fast the mouse moves each step
+speed_duration := 2    ; How long the mouse takes to moves each step (1 default)
 ; Spin settings
 spin_amount    := 20
 spin_size      := 25

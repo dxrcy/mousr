@@ -30,7 +30,6 @@ Now written in AutoHotKey!
 
 # TODO
 
-- [ ] Read shortcuts file
-- [ ] Compile
 - [ ] Test
+- [ ] Fix readme
 - [ ] Survey
