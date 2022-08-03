@@ -69,7 +69,6 @@ powershell -ExecutionPolicy ByPass -File compile.ps1
 
 # TODO
 
-- [ ] Test
-- [ ] Fix readme
 - [ ] Create linux, mac binaries
+- [ ] Test
 - [ ] Survey
