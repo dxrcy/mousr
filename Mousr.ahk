@@ -1,64 +1,99 @@
 #SingleInstance force
-#NoEnv
 
-; Variables
-active         := true ; Active on start
-; Speed settings
-speed_default  := 35   ; Default speed
-speed_slow     := 0.2  ; Slow speed multiplier on shifmt key
-speed_accel    := 1.5  ; Acceleration amount
-speed_min      := 8    ; Minimum speed
-speed_max      := 100  ; Maximum speed
-speed_duration := 2    ; How long the mouse takes to moves each step (1 default)
-; Spin settings
-spin_amount    := 20
-spin_size      := 25
-spin_duration  := 0.05
-
-speed          := speed_default
+; Global variables (from config.ini)
+IniRead temp, config.ini, MISC, START
+active := temp = "false" ? false : true
+IniRead speed_default,  config.ini, SPEED, DEFAULT
+IniRead speed_slow,     config.ini, SPEED, SLOW
+IniRead speed_accel,    config.ini, SPEED, ACCEL
+IniRead speed_min,      config.ini, SPEED, MIN
+IniRead speed_max,      config.ini, SPEED, MAX
+IniRead speed_duration, config.ini, SPEED, DURATION
+IniRead spin_amount,    config.ini, SPIN, AMOUNT
+IniRead spin_size,      config.ini, SPIN, SIZE
+IniRead spin_duration,  config.ini, SPIN, DURATION
+speed := speed_default
 SetDefaultMouseSpeed speed_duration
-setIcon()
 
-; Keyboard shortcut map
-; Change letter after '$' to change hotkey, Do not remove '$'
-; Change slow speed shift key by changing '+', Make sure any letter after '+' is capital
-; Mouse click shortcuts might not work with shift key
-!Insert::ToggleActive()
-#If active = true
-  ; Mouse move
-  $i::MouseUp()
-  $+I::MouseUp(true)
-  $j::MouseLeft()
-  $+J::MouseLeft(true)
-  $k::MouseDown()
-  $+K::MouseDown(true)
-  $l::MouseRight()
-  $+L::MouseRight(true)
-  ; Mouse click
-  $u::ClickLeft()
-  $8::ClickMiddle()
-  $o::ClickRight()
-  ; Mouse click toggle
-  $y::ToggleLeft()
-  ; Scroll
-  $w::ScrollUp()
-  $a::ScrollLeft()
-  $s::ScrollDown()
-  $d::ScrollRight()
-  ; Speed
-  $v::SpeedDown()
-  $+V::SpeedMin()
-  $b::SpeedUp()
-  $+B::SpeedMax()
-  $g::SpeedReset()
-  ; Other
-  !+Insert::Kill()
-  F5::Spin()
-#If
+; Map config hotkey names to functions (Do not change formatting)
+keyMap := {"KEYS_MISC.SPIN":        "Spin"
+          ,"KEYS_MISC.KILL":        "Kill"
+          ,"KEYS_MOUSE.UP":         "MouseUp"
+          ,"KEYS_MOUSE.LEFT":       "MouseLeft"
+          ,"KEYS_MOUSE.DOWN":       "MouseDown"
+          ,"KEYS_MOUSE.RIGHT":      "MouseRight"
+          ,"KEYS_MOUSE_SLOW.UP":    "MouseSlowUp"
+          ,"KEYS_MOUSE_SLOW.LEFT":  "MouseSlowLeft"
+          ,"KEYS_MOUSE_SLOW.DOWN":  "MouseSlowDown"
+          ,"KEYS_MOUSE_SLOW.RIGHT": "MouseSlowRight"
+          ,"KEYS_CLICK.LEFT":       "ClickLeft"
+          ,"KEYS_CLICK.HOLD":       "ClickHold"
+          ,"KEYS_CLICK.MIDDLE":     "ClickMiddle"
+          ,"KEYS_CLICK.RIGHT":      "ClickRight"
+          ,"KEYS_SCROLL.UP":        "ScrollUp"
+          ,"KEYS_SCROLL.LEFT":      "ScrollLeft"
+          ,"KEYS_SCROLL.DOWN":      "ScrollDown"
+          ,"KEYS_SCROLL.RIGHT":     "ScrollRight"
+          ,"KEYS_SPEED.DOWN":       "SpeedDown"
+          ,"KEYS_SPEED.MIN":        "SpeedMin"
+          ,"KEYS_SPEED.UP":         "SpeedUp"
+          ,"KEYS_SPEED.MAX":        "SpeedMax"
+          ,"KEYS_SPEED.RESET":      "SpeedReset" }
+
+init() { ; Start program (at end of file)
+  CreateHotkey("KEYS_MISC", "ACTIVATE", "ToggleActive")
+  SetIcon()
+  SetHotKeys()
+}
+
+; Create one hotkey
+CreateHotkey(section, name, function) {
+  IniRead key, config.ini, %section%, %name%
+  If !key or key = "ERROR" {
+    MsgBox Hotkey not defined [%section%] '%name%'
+    Return
+  }
+  Hotkey %key%, %function%, On
+}
+; Remove one hotkey
+RemoveHotkey(section, name) {
+  IniRead key, config.ini, %section%, %name%
+  If !key or key = "ERROR" {
+    MsgBox Hotkey not defined [%section%] '%name%'
+    Return
+  }
+  Hotkey %key%, %function%, Off
+}
+
+; Create or remove all hotkeys from config.ini
+SetHotKeys() {
+  global active
+  If active {
+    CreateAllHotkeys()
+  } else {
+    RemoveAllHotkeys()
+  }
+}
+; Create all hotkeys (from config file)
+CreateAllHotkeys() {
+  global keyMap
+  For k, v in keyMap {
+    name := StrSplit(k, ".")
+    CreateHotkey(name[1], name[2], v)
+  }
+}
+; Remove all hotkeys (if deactivated)
+RemoveAllHotkeys() {
+  global keyMap
+  For k, v in keyMap {
+    name := StrSplit(k, ".")
+    RemoveHotkey(name[1], name[2])
+  }
+}
 
 ; Set icon to active or inactive
 SetIcon() {
-  global
+  global active
   If active {
     Menu, Tray, Icon, %A_ScriptDir%\src\icon-active.ico
   } Else {
@@ -68,35 +103,59 @@ SetIcon() {
 
 ; Toggle program
 ToggleActive() {
-  global
+  global active
   active := !active
-  setIcon()
+  SetIcon()
+  SetHotKeys()
 }
+
 ; Kill program
 Kill() {
   ExitApp
 }
 
 ; Mouse move
-MouseLeft(isSlow = false) {
-  global
+MouseUp() {
+  global speed
   MouseGetPos x, y
-  MouseMove x - getSpeed(isSlow), y
+  MouseMove x, y - speed
 }
-MouseRight(isSlow = false) {
-  global
+MouseLeft() {
+  global speed
   MouseGetPos x, y
-  MouseMove x + getSpeed(isSlow), y
+  MouseMove x - speed, y
 }
-MouseUp(isSlow = false) {
-  global
+MouseDown() {
+  global speed
   MouseGetPos x, y
-  MouseMove x, y - getSpeed(isSlow)
+  MouseMove x, y + speed
 }
-MouseDown(isSlow = false) {
-  global
+MouseRight() {
+  global speed
   MouseGetPos x, y
-  MouseMove x, y + getSpeed(isSlow)
+  MouseMove x + speed, y
+}
+
+; Mouse move (slow)
+MouseSlowUp() {
+  global speed, speed_slow
+  MouseGetPos x, y
+  MouseMove x, y - Max(1, speed * speed_slow)
+}
+MouseSlowLeft() {
+  global speed, speed_slow
+  MouseGetPos x, y
+  MouseMove x - Max(1, speed * speed_slow), y
+}
+MouseSlowDown() {
+  global speed, speed_slow
+  MouseGetPos x, y
+  MouseMove x, y + Max(1, speed * speed_slow)
+}
+MouseSlowRight() {
+  global speed, speed_slow
+  MouseGetPos x, y
+  MouseMove x + Max(1, speed * speed_slow), y
 }
 
 ; Click mouse
@@ -109,9 +168,7 @@ ClickMiddle() {
 ClickRight() {
   MouseClick Right
 }
-
-; Toggle mouse click
-ToggleLeft() {
+ClickHold() {
   If GetKeyState(LButton) {
     MouseClick Left, , , , , U
   } Else {
@@ -120,62 +177,54 @@ ToggleLeft() {
 }
 
 ; Scroll
-ScrollLeft() {
-  SendInput {WheelLeft}
-}
-ScrollRight() {
-  SendInput {WheelRight}
-}
 ScrollUp() {
   SendInput {WheelUp}
+}
+ScrollLeft() {
+  SendInput {WheelLeft}
 }
 ScrollDown() {
   SendInput {WheelDown}
 }
+ScrollRight() {
+  SendInput {WheelRight}
+}
 
 ; Speed
-SpeedUp() {
-  global
-  speed *= speed_accel
-  speedNormalize()
-}
 SpeedDown() {
-  global
+  global speed, speed_accel
   speed /= speed_accel
   speedNormalize()
 }
 SpeedMin() {
-  global
+  global speed, speed_min
   speed := speed_min
   speedNormalize()
 }
+SpeedUp() {
+  global speed, speed_accel
+  speed *= speed_accel
+  speedNormalize()
+}
 SpeedMax() {
-  global
+  global speed, speed_max
   speed := speed_max
   speedNormalize()
 }
 SpeedReset() {
-  global
+  global speed, speed_default
   speed := speed_default
   speedNormalize()
 }
 ; Make sure speed is between bounds and integer
 SpeedNormalize() {
-  global
+  global speed, speed_min, speed_max
   speed := Round(Max(speed_min, Min(speed_max, speed)))
-}
-; Get speed from if shift is pressed
-getSpeed(isSlow) {
-  global
-  If (isSlow) {
-    Return Max(1, speed * speed_slow)
-  }
-  Return Max(1, speed)
 }
 
 ; Do a little spin :)
 Spin() {
-  global
+  global active, spin_amount, spin_size, spin_duration
   MouseGetPos x, y
   SetDefaultMouseSpeed spin_duration
 
@@ -190,3 +239,5 @@ Spin() {
   MouseMove x, y
   SetDefaultMouseSpeed duration
 }
+
+init() ; Start program
