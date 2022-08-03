@@ -1,6 +1,5 @@
 #SingleInstance force
 #NoEnv
-SetWorkingDir %A_ScriptDir%
 
 ; Variables
 active         := true ; Active on start
@@ -15,9 +14,6 @@ speed_duration := 2    ; How long the mouse takes to moves each step (1 default)
 spin_amount    := 20
 spin_size      := 25
 spin_duration  := 0.05
-; Icon settings (active/inactive icon filepaths)
-icon_active    := "image/icon-active.ico"
-icon_inactive  := "image/icon-inactive.ico"
 
 speed          := speed_default
 SetDefaultMouseSpeed speed_duration
@@ -64,9 +60,9 @@ setIcon()
 SetIcon() {
   global
   If active {
-    Menu, Tray, Icon, %icon_active%
+    Menu, Tray, Icon, %A_ScriptDir%\src\icon-active.ico
   } Else {
-    Menu, Tray, Icon, %icon_inactive%
+    Menu, Tray, Icon, %A_ScriptDir%\src\icon-inactive.ico
   }
 }
 

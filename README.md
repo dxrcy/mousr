@@ -32,4 +32,5 @@ Now written in AutoHotKey!
 
 - [ ] Test
 - [ ] Fix readme
+- [ ] Create linux, mac binaries
 - [ ] Survey
