@@ -1,47 +1,47 @@
 #SingleInstance force
 
 ; Global variables (from config.ini)
-IniRead temp, config.ini, MISC, START
+IniRead temp, config.ini, SETTINGS_MISC, START
 active := temp = "false" ? false : true
-IniRead speed_default,  config.ini, SPEED, DEFAULT
-IniRead speed_slow,     config.ini, SPEED, SLOW
-IniRead speed_accel,    config.ini, SPEED, ACCEL
-IniRead speed_min,      config.ini, SPEED, MIN
-IniRead speed_max,      config.ini, SPEED, MAX
-IniRead speed_duration, config.ini, SPEED, DURATION
-IniRead spin_amount,    config.ini, SPIN, AMOUNT
-IniRead spin_size,      config.ini, SPIN, SIZE
-IniRead spin_duration,  config.ini, SPIN, DURATION
+IniRead speed_default,  config.ini, SETTINGS_SPEED, DEFAULT
+IniRead speed_slow,     config.ini, SETTINGS_SPEED, SLOW
+IniRead speed_accel,    config.ini, SETTINGS_SPEED, ACCEL
+IniRead speed_min,      config.ini, SETTINGS_SPEED, MIN
+IniRead speed_max,      config.ini, SETTINGS_SPEED, MAX
+IniRead speed_duration, config.ini, SETTINGS_SPEED, DURATION
+IniRead spin_amount,    config.ini, SETTINGS_SPIN, AMOUNT
+IniRead spin_size,      config.ini, SETTINGS_SPIN, SIZE
+IniRead spin_duration,  config.ini, SETTINGS_SPIN, DURATION
 speed := speed_default
 SetDefaultMouseSpeed speed_duration
 
 ; Map config hotkey names to functions (Do not change formatting)
-keyMap := {"KEYS_MISC.SPIN":        "Spin"
-          ,"KEYS_MISC.KILL":        "Kill"
-          ,"KEYS_MOUSE.UP":         "MouseUp"
-          ,"KEYS_MOUSE.LEFT":       "MouseLeft"
-          ,"KEYS_MOUSE.DOWN":       "MouseDown"
-          ,"KEYS_MOUSE.RIGHT":      "MouseRight"
-          ,"KEYS_MOUSE_SLOW.UP":    "MouseSlowUp"
-          ,"KEYS_MOUSE_SLOW.LEFT":  "MouseSlowLeft"
-          ,"KEYS_MOUSE_SLOW.DOWN":  "MouseSlowDown"
-          ,"KEYS_MOUSE_SLOW.RIGHT": "MouseSlowRight"
-          ,"KEYS_CLICK.LEFT":       "ClickLeft"
-          ,"KEYS_CLICK.HOLD":       "ClickHold"
-          ,"KEYS_CLICK.MIDDLE":     "ClickMiddle"
-          ,"KEYS_CLICK.RIGHT":      "ClickRight"
-          ,"KEYS_SCROLL.UP":        "ScrollUp"
-          ,"KEYS_SCROLL.LEFT":      "ScrollLeft"
-          ,"KEYS_SCROLL.DOWN":      "ScrollDown"
-          ,"KEYS_SCROLL.RIGHT":     "ScrollRight"
-          ,"KEYS_SPEED.DOWN":       "SpeedDown"
-          ,"KEYS_SPEED.MIN":        "SpeedMin"
-          ,"KEYS_SPEED.UP":         "SpeedUp"
-          ,"KEYS_SPEED.MAX":        "SpeedMax"
-          ,"KEYS_SPEED.RESET":      "SpeedReset" }
+keyMap := {"MISC.SPIN":        "Spin"
+          ,"MISC.KILL":        "Kill"
+          ,"MOUSE.UP":         "MouseUp"
+          ,"MOUSE.LEFT":       "MouseLeft"
+          ,"MOUSE.DOWN":       "MouseDown"
+          ,"MOUSE.RIGHT":      "MouseRight"
+          ,"MOUSE_SLOW.UP":    "MouseSlowUp"
+          ,"MOUSE_SLOW.LEFT":  "MouseSlowLeft"
+          ,"MOUSE_SLOW.DOWN":  "MouseSlowDown"
+          ,"MOUSE_SLOW.RIGHT": "MouseSlowRight"
+          ,"CLICK.LEFT":       "ClickLeft"
+          ,"CLICK.HOLD":       "ClickHold"
+          ,"CLICK.MIDDLE":     "ClickMiddle"
+          ,"CLICK.RIGHT":      "ClickRight"
+          ,"SCROLL.UP":        "ScrollUp"
+          ,"SCROLL.LEFT":      "ScrollLeft"
+          ,"SCROLL.DOWN":      "ScrollDown"
+          ,"SCROLL.RIGHT":     "ScrollRight"
+          ,"SPEED.DOWN":       "SpeedDown"
+          ,"SPEED.MIN":        "SpeedMin"
+          ,"SPEED.UP":         "SpeedUp"
+          ,"SPEED.MAX":        "SpeedMax"
+          ,"SPEED.RESET":      "SpeedReset" }
 
 init() { ; Start program (at end of file)
-  CreateHotkey("KEYS_MISC", "ACTIVATE", "ToggleActive")
+  CreateHotkey("MISC", "ACTIVATE", "ToggleActive")
   SetIcon()
   SetHotKeys()
 }
