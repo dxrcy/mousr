@@ -12,7 +12,7 @@ Write-Output "`tCopied resources."
 & "C:\Program Files\AutoHotkey\Compiler\Ahk2Exe.exe" /in Mousr.ahk /out dist/win/Mousr.exe
 Write-Output "`tCreated executable."
 # Compress folder
-Compress-Archive -Path dist\win\* -DestinationPath dist\Mousr_win.zip
+Compress-Archive -Path dist\win\* -DestinationPath dist\Mousr_v-win_UNZIP.zip
 Write-Output "`tCompressed folder."
 # Delete uncompressed folder
 # Remove-Item -Path dist\win -Recurse
