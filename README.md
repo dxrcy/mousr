@@ -69,6 +69,8 @@ powershell -ExecutionPolicy ByPass -File compile.ps1
 
 # TODO
 
+- [ ] Fix mouse movement
+- [ ] Add 4 and 5 buttons for click
 - [ ] Create linux, mac binaries
 - [ ] Test
 - [ ] Survey
