@@ -7,6 +7,7 @@ Write-Output "`tCopy resources"
 Copy-Item src dist\win\src -Recurse
 Copy-Item README.md dist\win
 Copy-Item config.ini dist\win
+Copy-Item LICENSE dist\win
 Write-Output "`tCopied resources."
 # Create executable
 & "C:\Program Files\AutoHotkey\Compiler\Ahk2Exe.exe" /in Mousr.ahk /out dist/win/Mousr.exe
