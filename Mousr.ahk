@@ -238,22 +238,21 @@ Spin() {
 ; Show popup for current mode
 Popup() {
   global active, popup_size, popup_duration, popup_enabled
-  RemovePopup()
+  Gui Destroy
 
   If popup_enabled {
-    icon := active ? "\src\icon-active.ico" : "\src\icon-inactive.ico"
     Gui Color, 111111
-    Gui Add, Picture, w%popup_size% h%popup_size%, %A_ScriptDir%%icon%
+    icon := !active ? "\src\icon-active.ico" : "\src\icon-inactive.ico"
+    static MyPicture
+    Gui Add, Picture, w%popup_size% h%popup_size% vMyPicture, %A_ScriptDir%%icon%
     Gui +LastFound +AlwaysOnTop +ToolWindow
     WinSet TransColor, 111111
     Gui -Caption
     Gui Show, NoActivate
 
-    SetTimer RemovePopup, %popup_duration%
+    Sleep %popup_duration%
+    Gui Destroy
   }
-}
-RemovePopup() {
-  Gui Destroy
 }
 
 CreateHotkey("MISC", "ACTIVATE", "Refresh")
