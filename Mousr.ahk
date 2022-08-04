@@ -117,45 +117,37 @@ Kill() {
 ; Mouse move
 MouseUp() {
   global speed
-  MouseGetPos x, y
-  MouseMove x, y - speed
+  MouseMove 0, -speed, , R
 }
 MouseLeft() {
   global speed
-  MouseGetPos x, y
-  MouseMove x - speed, y
+  MouseMove -speed, 0, , R
 }
 MouseDown() {
   global speed
-  MouseGetPos x, y
-  MouseMove x, y + speed
+  MouseMove 0, +speed, , R
 }
 MouseRight() {
   global speed
-  MouseGetPos x, y
-  MouseMove x + speed, y
+  MouseMove +speed, 0, , R
 }
 
 ; Mouse move (slow)
 MouseSlowUp() {
   global speed, speed_slow
-  MouseGetPos x, y
-  MouseMove x, y - Max(1, speed * speed_slow)
+  MouseMove 0, -Max(1, speed * speed_slow), , R
 }
 MouseSlowLeft() {
   global speed, speed_slow
-  MouseGetPos x, y
-  MouseMove x - Max(1, speed * speed_slow), y
+  MouseMove - Max(1, speed * speed_slow), 0, , R
 }
 MouseSlowDown() {
   global speed, speed_slow
-  MouseGetPos x, y
-  MouseMove x, y + Max(1, speed * speed_slow)
+  MouseMove 0, + Max(1, speed * speed_slow), , R
 }
 MouseSlowRight() {
   global speed, speed_slow
-  MouseGetPos x, y
-  MouseMove x + Max(1, speed * speed_slow), y
+  MouseMove + Max(1, speed * speed_slow), 0, , R
 }
 
 ; Click mouse
