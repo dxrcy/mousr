@@ -46,7 +46,7 @@ Default controls, listed with config names:
 
 ### Changing controls
 
-To change hotkeys or settings, make sure Mousr is deactivated or not running, and edit `config.ini` in the app directory.
+To change hotkeys or settings, **make sure Mousr not running**, and edit `config.ini` in the app directory, then restart Mousr.
 
 # Contributing
 

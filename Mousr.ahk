@@ -1,8 +1,8 @@
 #SingleInstance force
 
 ; Global variables (from config.ini)
-IniRead temp, config.ini, SETTINGS_MISC, START
-active := temp = "false" ? false : true
+IniRead active, config.ini, SETTINGS_MISC, START
+active := active = "false" ? false : true
 IniRead speed_default,  config.ini, SETTINGS_SPEED, DEFAULT
 IniRead speed_slow,     config.ini, SETTINGS_SPEED, SLOW
 IniRead speed_accel,    config.ini, SETTINGS_SPEED, ACCEL
@@ -12,6 +12,10 @@ IniRead speed_duration, config.ini, SETTINGS_SPEED, DURATION
 IniRead spin_amount,    config.ini, SETTINGS_SPIN, AMOUNT
 IniRead spin_size,      config.ini, SETTINGS_SPIN, SIZE
 IniRead spin_duration,  config.ini, SETTINGS_SPIN, DURATION
+IniRead popup_enabled,  config.ini, SETTINGS_POPUP, ENABLED
+popup_enabled := popup_enabled = "false" ? false : true
+IniRead popup_size,     config.ini, SETTINGS_POPUP, SIZE
+IniRead popup_duration, config.ini, SETTINGS_POPUP, DURATION
 speed := speed_default
 SetDefaultMouseSpeed speed_duration
 
@@ -40,12 +44,6 @@ keyMap := {"MISC.SPIN":        "Spin"
           ,"SPEED.MAX":        "SpeedMax"
           ,"SPEED.RESET":      "SpeedReset" }
 
-init() { ; Start program (at end of file)
-  CreateHotkey("MISC", "ACTIVATE", "ToggleActive")
-  SetIcon()
-  SetHotKeys()
-}
-
 ; Create one hotkey
 CreateHotkey(section, name, function) {
   IniRead key, config.ini, %section%, %name%
@@ -62,7 +60,9 @@ RemoveHotkey(section, name) {
     MsgBox Hotkey not defined [%section%] '%name%'
     Return
   }
-  Hotkey %key%, %function%, Off
+  Try {
+    Hotkey %key%, %function%, Off
+  }
 }
 
 ; Create or remove all hotkeys from config.ini
@@ -102,11 +102,14 @@ SetIcon() {
 }
 
 ; Toggle program
-ToggleActive() {
+Refresh(dontToggle = false) {
   global active
-  active := !active
+  If !dontToggle {
+    active := !active
+  }
   SetIcon()
   SetHotKeys()
+  Popup()
 }
 
 ; Kill program
@@ -232,4 +235,26 @@ Spin() {
   SetDefaultMouseSpeed duration
 }
 
-init() ; Start program
+; Show popup for current mode
+Popup() {
+  global active, popup_size, popup_duration, popup_enabled
+  RemovePopup()
+
+  If popup_enabled {
+    icon := active ? "\src\icon-active.ico" : "\src\icon-inactive.ico"
+    Gui Color, 111111
+    Gui Add, Picture, w%popup_size% h%popup_size%, %A_ScriptDir%%icon%
+    Gui +LastFound +AlwaysOnTop +ToolWindow
+    WinSet TransColor, 111111
+    Gui -Caption
+    Gui Show, NoActivate
+
+    SetTimer RemovePopup, %popup_duration%
+  }
+}
+RemovePopup() {
+  Gui Destroy
+}
+
+CreateHotkey("MISC", "ACTIVATE", "Refresh")
+Refresh(true) ; Refresh state without change active state
