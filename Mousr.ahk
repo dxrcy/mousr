@@ -242,7 +242,7 @@ Popup() {
 
   If popup_enabled {
     Gui Color, 111111
-    icon := !active ? "\src\icon-active.ico" : "\src\icon-inactive.ico"
+    icon := active ? "\src\icon-active.ico" : "\src\icon-inactive.ico"
     static MyPicture
     Gui Add, Picture, w%popup_size% h%popup_size% vMyPicture, %A_ScriptDir%%icon%
     Gui +LastFound +AlwaysOnTop +ToolWindow
